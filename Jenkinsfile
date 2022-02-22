@@ -4,31 +4,10 @@ pipeline {
     environment {
         //be sure to replace "grocamador" with your own Docker Hub username
         DOCKER_IMAGE_NAME = "grocamador/train-schedule"
-    //     CHKP_CLOUDGUARD_ID = credentials("chkp-id")
-    //    CHKP_CLOUDGUARD_SECRET = credentials("chkp-key")
-        SG_CLIENT_ID = credentials("source-id")
-        SG_SECRET_KEY = credentials("source-key")
-        KUBECONFIG = credentials("my-kubeconfig")
-
         }
     
     stages {
-       stage('ShiftLeft secure Code Scan') {   
-            steps {   
-            echo 'Scan of code source'    
-                    script {      
-                        try {
-                           
-                            sh 'chmod +x shiftleft' 
-                            sh './shiftleft code-scan -x graddle/  -s .'
-                        } catch (Exception e) {
-                            input "Code scan showed some security issues, Are you sure you want to continue?"  
-                        }
-                   }
-            }
-         
-         }
-        
+
         stage('Build') {
             steps {
                 echo 'Running build automation'
@@ -62,23 +41,7 @@ pipeline {
                 }
             }
         }
-        stage('Image Assurance scanning') {   
-            steps {   
-            echo 'Image vulnerability scanning'    
-                   script {      
-                        try {
-                            sh "docker pull grocamador/train-schedule:${env.BUILD_NUMBER}"
-                            sh "docker save -o train-schedule.tar grocamador/train-schedule:${env.BUILD_NUMBER}"
-                            sh 'chmod +x shiftleft' 
-                            sh './shiftleft image-scan -i train-schedule.tar'
-                         
-                        } catch (Exception e) {
-                            input "Image scan found vulnerabilities, Are you sure you want to continue?"  
-                        }
-                   }
-            }
-         
-         }
+
         stage('Push Docker Image to latest') {
             when {
                 branch 'master'
