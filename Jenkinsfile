@@ -47,15 +47,13 @@ pipeline {
             when {
                 branch 'master'
             }
-            steps {
-            sh ("""     
-                  kubectl delete -f train-schedule-kube-stage.yml
-                  kubectl apply -f train-schedule-kube-stage.yml
-                """)
+            steps {             
+                kubernetesDeploy(
+                    kubeconfigId: 'kubeconfig',
+                    configs: 'train-schedule-kube-stage.yml',
+                    enableConfigSubstitution: true
+                )
  
-                // Other tentative that didnt work:
- //            kubectl set image deployment/train-schedule-deployment-stage train-schedule-stage=grocamador/train-schedule
- //            kubectl set image deployment/train-schedule-deployment-stage train-schedule-stage=grocamador/train-schedule:latest
             }
         }
         
