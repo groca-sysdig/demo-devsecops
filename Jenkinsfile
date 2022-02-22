@@ -7,7 +7,7 @@ pipeline {
         }
     
     stages {
-        
+
     stage('Build') {
             steps {
                 echo 'Running build automation'
@@ -36,38 +36,13 @@ pipeline {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'docker_hub_login') {
                         app.push("${env.BUILD_NUMBER}")
+                        app.push("latest")
                     
                     }
                 }
             }
         }
 
-        stage('Push Docker Image to latest') {
-            when {
-                branch 'master'
-            }
-            steps {
-                script {
-                    
-                    docker.withRegistry('https://registry.hub.docker.com', 'docker_hub_login') {
-                        app.push("latest")
-                    }
-                }
-            }
-        }
-        stage('Clean') {
-        steps{
-            echo 'cleaning up artifacts'
-                script{
-                try{
-                sh 'rm train-schedule.tar'
-                echo 'Image deleted'
-                } catch (Exception e) {
-                echo 'Already deleted'  
-                }
-                }
-            }
-        }
         stage('Deploy to stage') {
             when {
                 branch 'master'
