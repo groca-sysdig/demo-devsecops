@@ -2,7 +2,6 @@ pipeline {
     agent any
     
     environment {
-        //be sure to replace "grocamador" with your own Docker Hub username
         DOCKER_IMAGE_NAME = "grocamador/train-schedule"
         }
     
@@ -64,20 +63,11 @@ pipeline {
              steps {              
                 input 'Deploy to Production?'
                 milestone(1)
-//              With KUBECTL and Kubeconfig       
-              sh ("""                
-                  echo \$KUBECONFIG
-                  kubectl delete -f train-schedule-kube.yml
-                  kubectl apply -f train-schedule-kube.yml
-                """)
-
-                 
-//                 kubernetesDeploy(
-//                    kubeconfigId: 'kubeconfig',
-//                    configs: 'deploy.yml',
-//                    enableConfigSubstitution: true
-//                )
-
+                kubernetesDeploy(
+                    kubeconfigId: 'kubeconfig',
+                    configs: 'train-schedule-kube.yml',
+                    enableConfigSubstitution: true
+                )
                 
              }
          }
