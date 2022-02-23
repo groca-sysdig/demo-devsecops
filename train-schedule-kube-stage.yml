@@ -26,6 +26,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: train-schedule-deployment-stage
+  namespace: stage-train
   labels:
     app: train-schedule-stage
 spec:
