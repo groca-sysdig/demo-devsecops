@@ -5,7 +5,7 @@ metadata:
 spec:
   type: NodePort
   selector:
-    app: train-schedule
+    app: train-schedule-stage
   ports:
   - protocol: TCP
     port: 8080
