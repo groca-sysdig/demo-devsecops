@@ -31,7 +31,6 @@ pipeline {
         steps {
             
             sh "echo $DOCKER_IMAGE_NAME > sysdig_secure_images"
-            sh "cat sysdig_secure_images"
             sysdig engineCredentialsId: 'sysdig-secure-api-credentials', name: 'sysdig_secure_images', inlineScanning: true
         }
        }       
