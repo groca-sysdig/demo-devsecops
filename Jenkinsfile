@@ -11,7 +11,6 @@ pipeline {
             steps {
                 echo 'Running build automation'
                 sh './gradlew build --no-daemon'
-                archiveArtifacts artifacts: 'dist/trainSchedule.zip'
             }
         }
      stage('Build Docker Image') {
@@ -19,12 +18,8 @@ pipeline {
                 branch 'master'
             }
             steps {
-                script {
-                    app = docker.build(DOCKER_IMAGE_NAME)
-                    app.inside {
-                        sh 'echo Hello, World!'
-                    }
-                }
+                echo 'Building docker image'
+                sh 'docker build -t grocamador/demo-scan .'
             }
         }
             stage('Push Docker Image') {
