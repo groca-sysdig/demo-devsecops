@@ -22,6 +22,15 @@ pipeline {
                 sh 'docker build -t grocamador/demo-scan .'
             }
         }
+        
+      stage('Scanning Image with Sysdig') {
+        steps {
+            
+            sh "echo grocamador/demo-scan > sysdig_secure_images"
+            sysdig engineCredentialsId: 'sysdig-secure-api-credentials', name: 'sysdig_secure_images', inlineScanning: true
+        }
+       }  
+        
             stage('Push Docker Image') {
             when {
                 branch 'master'
