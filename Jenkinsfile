@@ -19,7 +19,7 @@ pipeline {
             }
             steps {
                 echo 'Building docker image'
-                sh 'docker build -t grocamador/demo-scan:${env.BUILD_NUMBER} .'
+                sh "docker build -t grocamador/demo-scan:${env.BUILD_NUMBER} ."
             }
         }
         
