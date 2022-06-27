@@ -26,7 +26,7 @@ pipeline {
       stage('Scanning Image with Sysdig') {
         steps {
             
-            sh "echo grocamador/demo-scan${env.BUILD_NUMBER} > sysdig_secure_images"
+            sh "echo grocamador/demo-scan:${env.BUILD_NUMBER} > sysdig_secure_images"
             sysdig engineCredentialsId: 'sysdig-secure-api-credentials', name: 'sysdig_secure_images', inlineScanning: true
         }
        }  
